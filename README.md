@@ -6,7 +6,6 @@
 - Writing a long-running Go service for continuous RSS feed collection and storage
 It’s designed to help you track your favorite blogs, news, and podcasts efficiently with aggregated updates.
 
-[![](https://godoc.org/github.com/abdol-ahmed/gator?status.svg)](https://godoc.org/github.com/abdol-ahmed/gator)![Deploy](https://github.com/abdol-ahmed/gator/workflows/Tests/badge.svg)
 ## ✅ Prerequisites:
 
 To run this program, two prerequisites must be met: **PostgreSQL** and **Go** must be installed on your system.
