@@ -27,7 +27,6 @@ func RSSFeedAggregatorHandler(s *state, cmd command) error {
 		scrapeFeeds(s)
 	}
 
-	return nil
 }
 
 func scrapeFeeds(s *state) {
@@ -48,7 +47,7 @@ func scrapeFeeds(s *state) {
 		return
 	}
 
-	printRSSItems(rssFeed.Channel.Item)
+	savePosts(s, feed.ID, rssFeed.Channel.Item)
 	log.Printf("Feed %s collected, %v posts found", feed.Name, len(rssFeed.Channel.Item))
 }
 
@@ -110,23 +109,19 @@ func GetFeedsHandler(s *state, cmd command) error {
 }
 
 func printFeed(feed database.Feed) {
-	fmt.Printf(" * ID:      %v\n", feed.ID)
-	fmt.Printf(" * Name:    %v\n", feed.Name)
-	fmt.Printf(" * URL:     %v\n", feed.Url)
-	fmt.Printf(" * UserID:  %v\n", feed.UserID)
+	fmt.Printf(" * ID:      			%v\n", feed.ID)
+	fmt.Printf(" * Name:    			%v\n", feed.Name)
+	fmt.Printf(" * URL:     			%v\n", feed.Url)
+	fmt.Printf(" * UserID:  			%v\n", feed.UserID)
+	fmt.Printf(" * LastFetchedAt: 	%v\n", feed.LastFetchedAt.Time)
 }
 
 func printFeeds(feeds []database.GetFeedsWithUsersRow) {
 	fmt.Printf("Found %d feeds:\n", len(feeds))
 	for _, row := range feeds {
-		fmt.Printf(" * Name:    %v\n", row.Feed.Name)
-		fmt.Printf(" * URL:     %v\n", row.Feed.Url)
-		fmt.Printf(" * User Name:  %v\n", row.User.Name)
-	}
-}
-
-func printRSSItems(rssItems []RSSItem) {
-	for _, rssItem := range rssItems {
-		fmt.Printf("Found post: %s\n", rssItem.Title)
+		fmt.Printf(" * Name:    			%v\n", row.Feed.Name)
+		fmt.Printf(" * URL:     			%v\n", row.Feed.Url)
+		fmt.Printf(" * User Name:  		%v\n", row.User.Name)
+		fmt.Printf(" * LastFetchedAt: 	%v\n", row.Feed.LastFetchedAt.Time)
 	}
 }
