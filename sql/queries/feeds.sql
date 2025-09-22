@@ -24,3 +24,14 @@ SELECT * FROM feeds;
 
 -- name: GetFeedsWithUsers :many
 SELECT sqlc.embed(f), sqlc.embed(u) FROM feeds f INNER JOIN users u ON u.id = f.user_id;
+
+-- name: MarkFeedFetched :one
+UPDATE feeds
+SET last_fetched_at = NOW() AT TIME ZONE 'utc', updated_at = NOW() AT TIME ZONE 'utc'
+WHERE id = $1
+RETURNING *;
+
+-- name: GetNextFeedToFetch :one
+SELECT *
+FROM feeds
+ORDER BY last_fetched_at ASC NULLS FIRST LIMIT 1;
