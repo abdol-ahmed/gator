@@ -19,20 +19,13 @@ func RSSFeedAggregatorHandler(s *state, cmd command) error {
 	return nil
 }
 
-func CreateFeedHandler(s *state, cmd command) error {
+func CreateFeedHandler(s *state, cmd command, user database.User) error {
 	if len(cmd.Args) != 2 {
 		return fmt.Errorf("usage: %s <name> <url>", cmd.Name)
 	}
 
 	name := cmd.Args[0]
 	url := cmd.Args[1]
-
-	userName := s.config.GetUser()
-
-	user, err := s.db.GetUserByName(context.Background(), userName)
-	if err != nil {
-		return err
-	}
 
 	feedParam := database.CreateFeedParams{
 		ID:        uuid.New(),
@@ -49,6 +42,21 @@ func CreateFeedHandler(s *state, cmd command) error {
 	}
 
 	println("feed has been created successfully")
+
+	feedFollowParam := database.CreateFeedFollowParams{
+		ID:        uuid.New(),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
+		UserID:    user.ID,
+		FeedID:    feed.ID,
+	}
+
+	_, err = s.db.CreateFeedFollow(context.Background(), feedFollowParam)
+	if err != nil {
+		return fmt.Errorf("couldn't follow the feed: %w", err)
+	}
+	println("feed has been followed by '%s'.", user.Name)
+
 	printFeed(feed)
 	return nil
 }

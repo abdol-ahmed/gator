@@ -41,8 +41,11 @@ func main() {
 	commands.Register("reset", DeleteUsersHandler)
 	commands.Register("users", GetUsersHandler)
 	commands.Register("agg", RSSFeedAggregatorHandler)
-	commands.Register("addfeed", CreateFeedHandler)
+	commands.Register("addfeed", LoggedInMiddleware(CreateFeedHandler))
 	commands.Register("feeds", GetFeedsHandler)
+	commands.Register("follow", LoggedInMiddleware(CreateFollowHandler))
+	commands.Register("following", LoggedInMiddleware(GetFeedFollowOfUserHandler))
+	commands.Register("unfollow", LoggedInMiddleware(UnfollowFeedHandler))
 
 	if len(os.Args) < 2 {
 		fmt.Println("too many or fewer arguments")
