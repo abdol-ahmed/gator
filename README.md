@@ -85,4 +85,8 @@ Once the installation and configuration are complete, you can start using gator 
         gator browse 10
     ```
 
-ℹ️ _Note_: There are others commands: **reset**, **users**, **feeds**, **following**, and **unfollow**.
+ℹ️ There are a few other commands you may need as well:
+- **reset:** `gator reset` - Delete all users, feeds, and posts 
+- **users:** `gator users` - List all users
+- **feeds:** `gator feeds` - List all feeds
+- **unfollow:** `gator unfollow <url>` - Unfollow a feed that already exists in the database
